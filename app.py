@@ -5,6 +5,7 @@ import google.generativeai as genai
 import os
 from flask_cors import CORS
 import json
+from dotenv import load_dotenv
 
 from werkzeug.utils import secure_filename
 
@@ -14,7 +15,12 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # Initialize Gemini API
-genai.configure(api_key="AIzaSyBAm3FwW4KadjuUnZ_H-hO6ZQO2wWA6E0Y")
+
+load_dotenv()  # Load environment variables from .env
+
+api_key = os.getenv("GEMINI_API_KEY")
+
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 def extract_text_from_file(filepath):
